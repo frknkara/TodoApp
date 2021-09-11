@@ -10,12 +10,23 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Çikolata</td>
+                    <tr *ngFor="let row of list">
+                        <td>{{row.id}}</td>
+                        <td>{{row.item}}</td>
+                    </tr>
+                    <tr *ngIf="list.length === 0">
+                        <td colspan="2" class="text-center no-record">No record found.</td>
                     </tr>
                 </tbody>
             </table>
+            <form>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="New Item">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="button">Add</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
