@@ -10,8 +10,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let row of list">
-                        <td>{{row.id}}</td>
+                    <tr *ngFor="let row of list; let i = index;">
+                        <td>{{i+1}}</td>
                         <td>{{row.item}}</td>
                     </tr>
                     <tr *ngIf="list.length === 0">
@@ -19,14 +19,14 @@
                     </tr>
                 </tbody>
             </table>
-            <form>
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="New Item">
-                    <div class="input-group-append">
-                        <button class="btn btn-primary" type="button">Add</button>
-                    </div>
+            <div class="input-group mb-3">
+                <input type="text" id="add-new-item-text" class="form-control" placeholder="New Item"
+                    [(ngModel)]="newItem">
+                <div class="input-group-append">
+                    <button id="add-button" class="btn btn-primary" type="button" [disabled]="!newItem"
+                        (click)="onAddButtonClick()">Add</button>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>

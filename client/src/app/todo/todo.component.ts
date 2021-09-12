@@ -20,9 +20,24 @@ export class TodoComponent implements OnInit {
   public set list(value: Array<TodoItem>) {
     this._list = value;
   }
+
+  private _newItem: string = "";
+
+  public get newItem() {
+    return this._newItem;
+  }
+
+  public set newItem(value: string) {
+    this._newItem = value;
+  }
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  onAddButtonClick() {
+    this.list.push({id: this.list.length, item: this.newItem});
+    this.newItem = "";
   }
 
 }
