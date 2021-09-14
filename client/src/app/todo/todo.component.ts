@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-
-interface TodoItem {
-  id: number,
-  item: string
-}
+import { TodoItem } from '../models/todo-item';
+import { TodoApiService } from '../services/todo-api.service';
 
 @Component({
   selector: 'app-todo',
@@ -30,14 +27,19 @@ export class TodoComponent implements OnInit {
   public set newItem(value: string) {
     this._newItem = value;
   }
-  constructor() { }
+  constructor(private todoApiService: TodoApiService) { }
 
   ngOnInit(): void {
+    this.todoApiService.getList().subscribe((res) => {
+      this.list = res;
+    });
   }
 
   onAddButtonClick() {
-    this.list.push({id: this.list.length, item: this.newItem});
-    this.newItem = "";
+    this.todoApiService.add({ id: undefined, item: this.newItem }).subscribe((res) => {
+      this.list.push({ id: this.list.length, item: this.newItem });
+      this.newItem = "";
+    });
   }
 
 }
