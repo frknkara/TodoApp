@@ -1,6 +1,9 @@
+import { HttpClientModule } from '@angular/common/http';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { TodoApiService } from '../services/todo-api.service';
+import { TodoApiServiceStub } from '../services/todo-api.service.mock';
 
 import { TodoComponent } from './todo.component';
 
@@ -10,8 +13,9 @@ describe('TodoComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormsModule],
-      declarations: [TodoComponent]
+      imports: [FormsModule, HttpClientModule],
+      declarations: [TodoComponent],
+      providers: [{ provide: TodoApiService, useClass: TodoApiServiceStub }],
     })
       .compileComponents();
   });
