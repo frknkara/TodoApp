@@ -6,7 +6,7 @@ docker exec -it mysql mysql -uroot -proot -e 'CREATE DATABASE tododb CHARACTER S
 TO START BACKEND APPLICATION RUN FOLLOWING COMMANDS AFTER DATABASE CREATION:
 
 cd server
-go run .\todoapp\todo.go
+go run .
 
 TO START FRONTEND APPLICATION RUN FOLLOWING COMMANDS:
 
