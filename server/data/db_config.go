@@ -1,4 +1,4 @@
-package dcl
+package data
 
 import "fmt"
 

@@ -9,25 +9,17 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-type MockTodoDcl struct {
+type MockTodoRepository struct {
 	mock.Mock
 }
 
-func (mock *MockTodoDcl) InitDb() error {
-	return nil
-}
-
-func (mock *MockTodoDcl) CloseConnection() error {
-	return nil
-}
-
-func (mock *MockTodoDcl) Add(entity.TodoItem) (entity.TodoItem, error) {
+func (mock *MockTodoRepository) Add(entity.TodoItem) (entity.TodoItem, error) {
 	args := mock.Called()
 	result := args.Get(0)
 	return result.(entity.TodoItem), args.Error(1)
 }
 
-func (mock *MockTodoDcl) GetList() ([]entity.TodoItem, error) {
+func (mock *MockTodoRepository) GetList() ([]entity.TodoItem, error) {
 	args := mock.Called()
 	result := args.Get(0)
 	if result == nil {
@@ -37,7 +29,7 @@ func (mock *MockTodoDcl) GetList() ([]entity.TodoItem, error) {
 }
 
 func TestGetList(t *testing.T) {
-	mockDcl := new(MockTodoDcl)
+	mockDcl := new(MockTodoRepository)
 
 	todoItem := entity.TodoItem{Id: 1, Item: "TestItem"}
 	mockDcl.On("GetList").Return([]entity.TodoItem{todoItem}, nil)
@@ -53,7 +45,7 @@ func TestGetList(t *testing.T) {
 }
 
 func TestGetListError(t *testing.T) {
-	mockDcl := new(MockTodoDcl)
+	mockDcl := new(MockTodoRepository)
 
 	mockDcl.On("GetList").Return(nil, errors.New("GetList test error"))
 
@@ -68,7 +60,7 @@ func TestGetListError(t *testing.T) {
 }
 
 func TestAdd(t *testing.T) {
-	mockDcl := new(MockTodoDcl)
+	mockDcl := new(MockTodoRepository)
 
 	todoItem := entity.TodoItem{Item: "TestItem"}
 	mockDcl.On("Add").Return(todoItem, nil)
@@ -83,7 +75,7 @@ func TestAdd(t *testing.T) {
 }
 
 func TestAddError(t *testing.T) {
-	mockDcl := new(MockTodoDcl)
+	mockDcl := new(MockTodoRepository)
 
 	todoItem := entity.TodoItem{Item: "TestItem"}
 	mockDcl.On("Add").Return(entity.TodoItem{}, errors.New("Add test error"))
@@ -98,7 +90,7 @@ func TestAddError(t *testing.T) {
 }
 
 func TestAddEmptyTodoItem(t *testing.T) {
-	mockDcl := new(MockTodoDcl)
+	mockDcl := new(MockTodoRepository)
 
 	service := New(mockDcl)
 
@@ -109,7 +101,7 @@ func TestAddEmptyTodoItem(t *testing.T) {
 }
 
 func TestAddEmptyTextTodoItem(t *testing.T) {
-	mockDcl := new(MockTodoDcl)
+	mockDcl := new(MockTodoRepository)
 
 	todoItem := entity.TodoItem{Item: ""}
 
@@ -122,7 +114,7 @@ func TestAddEmptyTextTodoItem(t *testing.T) {
 }
 
 func TestAddLongerThan200BytesTextTodoItem(t *testing.T) {
-	mockDcl := new(MockTodoDcl)
+	mockDcl := new(MockTodoRepository)
 
 	sample201BytesText := "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque mi elit, tincidunt nec pharetra a, pellentesque sed orci. Cras et eleifend massa. Suspendisse sit amet aliquet orci nullam sodales."
 	todoItem := entity.TodoItem{Item: sample201BytesText}

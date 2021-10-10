@@ -2,7 +2,7 @@ package service
 
 import (
 	"errors"
-	"todoapp/dcl"
+	"todoapp/data"
 	"todoapp/entity"
 )
 
@@ -12,12 +12,12 @@ type TodoService interface {
 }
 
 type todoService struct {
-	dcl dcl.TodoDcl
+	repository data.TodoRepository
 }
 
-func New(dcl dcl.TodoDcl) TodoService {
+func New(repository data.TodoRepository) TodoService {
 	return &todoService{
-		dcl: dcl,
+		repository: repository,
 	}
 }
 
@@ -28,9 +28,9 @@ func (service *todoService) Add(todoItem entity.TodoItem) (entity.TodoItem, erro
 	if len(todoItem.Item) > 200 {
 		return entity.TodoItem{}, errors.New("item length can't be longer than 200")
 	}
-	return service.dcl.Add(todoItem)
+	return service.repository.Add(todoItem)
 }
 
 func (service *todoService) GetList() ([]entity.TodoItem, error) {
-	return service.dcl.GetList()
+	return service.repository.GetList()
 }

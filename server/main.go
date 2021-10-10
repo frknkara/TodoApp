@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 	"todoapp/controller"
-	"todoapp/dcl"
+	"todoapp/data"
 	"todoapp/router"
 	"todoapp/service"
 
@@ -13,16 +13,17 @@ import (
 )
 
 func main() {
+	db, err := data.InitDb()
+	if err != nil {
+		log.Fatalln(err)
+	}
 	var (
-		todoDcl        dcl.TodoDcl               = dcl.New()
-		todoService    service.TodoService       = service.New(todoDcl)
+		todoRepository data.TodoRepository       = data.New(db)
+		todoService    service.TodoService       = service.New(todoRepository)
 		todoController controller.TodoController = controller.New(todoService)
 	)
 
-	if err := todoDcl.InitDb(); err != nil {
-		log.Fatalln(err)
-	}
-	defer todoDcl.CloseConnection()
+	defer data.CloseConnection(db)
 	r := router.Router(todoController)
 
 	handler := cors.New(cors.Options{
