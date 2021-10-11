@@ -4,16 +4,18 @@ services:
   - docker:dind
 
 stages:
-  - test
+  - test-backend
   - deploy
 
-test:
-  stage: test
+test-backend:
+  stage: test-backend
+  image: golang:1.17-alpine
   only:
     - develop
     - production
   script:
-    - echo run tests in this section
+    - cd server
+    - go test ./...
 
 step-deploy-prod:
   stage: deploy
