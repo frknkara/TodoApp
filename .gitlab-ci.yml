@@ -19,6 +19,18 @@ test-backend:
   script:
     - go test ./...
 
+test-frontend:
+  stage: test-frontend
+  image: node:latest
+  only:
+    - develop
+    - production
+  before_script:
+    - cd /builds/frknkara/todo/client
+    - npm install
+  script:
+    - npm run test --no-watch
+
 step-deploy-prod:
   stage: deploy
   only:
