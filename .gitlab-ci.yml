@@ -17,7 +17,12 @@ test-backend:
     - cd /builds/frknkara/todo/server
     - go mod download
   script:
-    - go test ./...
+    - go get gotest.tools/gotestsum
+    - gotestsum ./... --junitfile report.xml --format testname
+  artifacts:
+    when: always
+    reports:
+      junit: report.xml
 
 step-deploy-prod:
   stage: deploy
