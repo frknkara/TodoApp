@@ -1,29 +1,46 @@
-image: docker
+image: tmaier/docker-compose:latest
 
 services:
   - docker:dind
 
 stages:
-  - test
+  - build-test-backend
+  - build-test-frontend
   - deploy
 
-test:
-  stage: test
+build-test-backend:
+  stage: build-test-backend
+  image: golang:latest
   only:
     - develop
     - production
+  before_script:
+    - cd /builds/frknkara/todo/server
+    - go mod download
   script:
-    - echo run tests in this section
+    - go build .
+    - go test ./...
+
+build-test-frontend:
+  stage: build-test-frontend
+  image: markhobson/node-chrome:latest 
+  only:
+    - develop
+    - production
+  before_script:
+    - cd /builds/frknkara/todo/client
+    - npm ci 
+  script:
+    - npm link @angular/cli@12.2.5
+    - npm run build 
+    - npm run test:ci 
 
 step-deploy-prod:
   stage: deploy
+  image: docker/compose:latest
   only:
     - production
   script:
-    - sudo apt-get install -y python3-pip
-    - sudo pip3 install --upgrade setuptools
-    - sudo pip3 install docker-compose
-    - sudo docker image prune -f
     - docker-compose build --no-cache
     - docker-compose up -d
   environment: production
