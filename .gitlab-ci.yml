@@ -14,8 +14,7 @@ test-backend:
     - develop
     - production
   before_script:
-    - cd
-    - cd server
+    - cd /builds/frknkara/todo/server
     - go mod download
   script:
     - go test ./...
