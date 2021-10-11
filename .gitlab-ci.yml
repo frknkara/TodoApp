@@ -9,7 +9,7 @@ stages:
   - deploy
 
 build-test-backend:
-  stage: test-backend
+  stage: build-test-backend
   image: golang:latest
   only:
     - develop
@@ -22,7 +22,7 @@ build-test-backend:
     - go test ./...
 
 build-test-frontend:
-  stage: test-frontend
+  stage: build-test-frontend
   image: svaseghi/node-chrome:v1 
   only:
     - develop
