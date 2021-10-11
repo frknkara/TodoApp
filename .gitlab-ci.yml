@@ -5,6 +5,7 @@ services:
 
 stages:
   - test-backend
+  - test-frontend
   - deploy
 
 test-backend:
