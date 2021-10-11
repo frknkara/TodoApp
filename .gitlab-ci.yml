@@ -13,8 +13,11 @@ test-backend:
   only:
     - develop
     - production
+  before_script:
+    - mkdir -p $GOPATH/src/gitlab.com/frknkara/todo
+    - cd $GOPATH/src/gitlab.com/frknkara/todo/server
+    - go mod download
   script:
-    - cd server
     - go test ./...
 
 step-deploy-prod:
