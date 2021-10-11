@@ -1,0 +1,52 @@
+version: "3.7"
+
+services:
+  db:
+    image: mysql/mysql-server:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_DATABASE: tododb
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    expose:
+      - "3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - todo-network
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    environment:
+      MYSQL_HOST_NAME: "db"
+    depends_on:
+      - db
+    ports:
+      - "3000:3000"
+    expose:
+      - "3000"
+    networks:
+      - todo-network
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "3005:80"
+    expose:
+      - "3005"
+    networks:
+      - todo-network
+
+volumes:
+  db_data:
+
+networks:
+  todo-network:
+    driver: bridge
