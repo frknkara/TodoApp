@@ -9,7 +9,7 @@ stages:
 
 test-backend:
   stage: test-backend
-  image: golang:1.17-alpine
+  image: golang:latest
   only:
     - develop
     - production
