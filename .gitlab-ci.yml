@@ -23,15 +23,15 @@ build-test-backend:
 
 build-test-frontend:
   stage: build-test-frontend
-  image: svaseghi/node-chrome:v1 
+  image: markhobson/node-chrome:latest 
   only:
     - develop
     - production
   before_script:
     - cd /builds/frknkara/todo/client
-    - export CHROME_BIN=/usr/bin/google-chrome 
     - npm ci 
   script:
+    - npm link @angular/cli@12.2.5
     - npm run build 
     - npm run test:ci 
 
