@@ -14,8 +14,8 @@ test-backend:
     - develop
     - production
   before_script:
-    - mkdir -p $GOPATH/src/gitlab.com/frknkara/todo
-    - cd $GOPATH/src/gitlab.com/frknkara/todo/server
+    - cd
+    - cd server
     - go mod download
   script:
     - go test ./...
