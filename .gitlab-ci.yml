@@ -30,7 +30,7 @@ test-frontend:
     - cd /builds/frknkara/todo/client
     - npm install
   script:
-    - npm run test --no-watch
+    - npm run test:ci
 
 step-deploy-prod:
   stage: deploy
