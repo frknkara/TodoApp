@@ -4,11 +4,11 @@ services:
   - docker:dind
 
 stages:
-  - test-backend
-  - test-frontend
+  - build-test-backend
+  - build-test-frontend
   - deploy
 
-test-backend:
+build-test-backend:
   stage: test-backend
   image: golang:latest
   only:
@@ -18,19 +18,22 @@ test-backend:
     - cd /builds/frknkara/todo/server
     - go mod download
   script:
+    - go build .
     - go test ./...
 
-test-frontend:
+build-test-frontend:
   stage: test-frontend
-  image: node:latest
+  image: svaseghi/node-chrome:v1 
   only:
     - develop
     - production
   before_script:
     - cd /builds/frknkara/todo/client
-    - npm install
+    - export CHROME_BIN=/usr/bin/google-chrome 
+    - npm ci 
   script:
-    - npm run test:ci
+    - npm run build 
+    - npm run test:ci 
 
 step-deploy-prod:
   stage: deploy
